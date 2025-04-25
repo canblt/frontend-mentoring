@@ -1,0 +1,15 @@
+.form {
+  padding: 0.5rem;
+  margin: 0;
+  text-align: left;
+  color: var(--oev-palette-secondary-dark);
+}
+
+.content {
+  padding: 0 2rem 1rem;
+  margin: 0;
+  text-align: justify;
+  justify-content: space-between;
+  display: flex;
+  width: 230px;
+}

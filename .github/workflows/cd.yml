@@ -1,0 +1,19 @@
+name: Delivery
+
+on:
+  push:
+    branches:
+      - main
+      - staging
+      - development
+    paths-ignore:
+      - '**/*.md'
+
+jobs:
+  delivery:
+    uses: id-fabrik/workflows/.github/workflows/delivery-ts.yml@main
+    if: ${{ github.repository != 'id-fabrik/frontend-template' }}
+    secrets: inherit
+    with:
+      stack: frontend
+      project: template

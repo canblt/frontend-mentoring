@@ -1,0 +1,12 @@
+version: '3.18'
+
+services:
+  nextjs:
+    ports:
+      - 3000:3000
+    build:
+      context: .
+      dockerfile: Dockerfile
+  #tbd
+  #backend:
+  #image: pathtobackendregistry:latest

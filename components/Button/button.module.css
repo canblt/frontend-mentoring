@@ -1,0 +1,8 @@
+.border {
+  border-radius: 0.5rem;
+  border-color: var(--oev-palette-secondary-dark);
+}
+
+.fontColor {
+  color: var(--oev-palette-secondary-dark);
+}

@@ -1,0 +1,9 @@
+test.setup.tsx
+*.steps.tsx
+*.feature
+style.tsx
+style.ts
+node_modules
+.next
+interfaces.ts
+theme.tsx

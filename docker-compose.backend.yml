@@ -1,0 +1,29 @@
+version: '3.18'
+
+services:
+  nextjs:
+    ports:
+      - '3068:3000'
+    build:
+      context: .
+      dockerfile: Dockerfile
+    depends_on:
+      - mongo
+    environment:
+      MONGO_URI: mongodb://mongo:27017/user_database
+
+  mongo:
+    image: mongo:latest
+    container_name: mongo
+    ports:
+      - '27017:27017'
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: 'user'
+      MONGO_INITDB_ROOT_PASSWORD: 'admin'
+      MONGO_INITDB_DATABASE: 'user_database'
+    volumes:
+      - mongo_data:/data/db
+      - ./init-mongo:/docker-entrypoint-initdb.d/
+
+volumes:
+  mongo_data:

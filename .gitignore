@@ -1,0 +1,33 @@
+# dependencies
+node_modules
+/.pnp
+.pnp.js
+
+# local configurations
+.idea
+.DS_Store
+.vscode
+
+# next
+.next
+
+# playwright local artifacts
+traces
+
+
+# testing
+/coverage
+
+# log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+/tests/e2e/reports/*
+
+#yarn
+.pnp.*
+.yarn/*
+!.yarn/releases
+
+test-results
