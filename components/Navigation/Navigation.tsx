@@ -1,6 +1,7 @@
 import { Grid2 as Grid } from '@mui/material';
 import Link from 'next/link';
 import { FC } from 'react';
+import { Routes } from '@/config/routes';
 import styles from './navigation.module.css';
 
 const NavBar: FC = () => (
@@ -14,15 +15,9 @@ const NavBar: FC = () => (
       </Link>
       <Link
         className={styles.link}
-        href="/products/"
+        href={Routes.Books}
       >
-        Products
-      </Link>
-      <Link
-        className={styles.link}
-        href="/user/"
-      >
-        Users
+        Books
       </Link>
     </Grid>
   </nav>
