@@ -1,16 +1,18 @@
-'use client';
-
-import { useQuery } from '@tanstack/react-query';
-import { BookRaw } from '@/models/book/book.raw';
-import { fetchBooks } from '@services/api/books';
 import { MapperRegistry } from '@/config/mapper-registry';
 import { defaultErrorBook } from '@/models/book/book';
+import { fetchBooks } from '@services/api/books';
+import { useQuery } from '@tanstack/react-query';
 
-export function useBooks() {
+export function useBooks(params: {
+  page: number;
+  perPage: number;
+  title?: string;
+}) {
   return useQuery({
-    queryKey: ['books'],
-    queryFn: fetchBooks,
-    select: (rawArray: BookRaw[] | undefined) => {
+    queryKey: ['books', params],
+    queryFn: async () => {
+      const rawArray = await fetchBooks(params);
+
       if (!rawArray || rawArray.length === 0) {
         return [];
       }
@@ -19,7 +21,6 @@ export function useBooks() {
           return MapperRegistry.book(raw);
         } catch (e) {
           console.error('Invalid book data', e, 'raw:', raw);
-          // Return a default error book object
           return defaultErrorBook;
         }
       });
