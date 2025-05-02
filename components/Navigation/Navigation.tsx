@@ -1,25 +1,13 @@
-import { Grid2 as Grid } from '@mui/material';
+import { Grid2 } from '@mui/material';
 import Link from 'next/link';
-import { FC } from 'react';
+import React from 'react';
 import { Routes } from '@/config/routes';
-import styles from './navigation.module.css';
 
-const NavBar: FC = () => (
-  <nav>
-    <Grid container>
-      <Link
-        className={styles.link}
-        href="/"
-      >
-        Home
-      </Link>
-      <Link
-        className={styles.link}
-        href={Routes.Books}
-      >
-        Books
-      </Link>
-    </Grid>
-  </nav>
-);
-export default NavBar;
+export default function Navigation() {
+  return (
+    <Grid2 container>
+      <Link href="/">Home</Link>
+      <Link href={Routes.Books}>Books</Link>
+    </Grid2>
+  );
+}

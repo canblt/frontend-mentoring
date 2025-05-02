@@ -27,19 +27,30 @@ Trennung von:
 ### 📁 Projektstruktur
 
 ```bazaar
-├── api
-│ └── books.ts
+
+├── app
+│ └── books
+│   └── page.tsx
+├── assets
+├── components
+│ └── Books
+│   └── Books.tsx
+├── config
+│ └── mapper-registry.ts
 ├── models
-│ └── book.ts
-├── factories
-│ └── book.factory.ts
-├── hooks
-│ └── useBooks.ts
-├── pages
-│ └── index.tsx
+│ └── book
+│   └── book.ts
+│   └── book.factory.ts
+│   └── book.raw.ts
+├── services
+│ └── api
+│   └── book.ts
+│ └── hooks
+│   └── useBooks.ts
+
 ```
 
-### 1. Raw + Domain Models (`models/book.ts`)
+### 1. Raw Models (`models/book/book.raw.ts`)
 
 ```ts
 export interface BookRaw {
@@ -47,7 +58,11 @@ export interface BookRaw {
   title: string;
   published: string;
 }
+```
 
+### 2. Domain Models (`models/book/book.ts`)
+
+```ts
 export interface Book {
   isbn: string;
   title: string;
@@ -55,10 +70,11 @@ export interface Book {
 }
 ```
 
-### 2. Factory (`factories/book.factory.ts`)
+### 3. Factory (`models/book/book.factory.ts`)
 
 ```ts
-import { BookRaw, Book } from '../models/book';
+import { Book } from './book';
+import { BookRaw } from './book.raw';
 
 export const bookFromRaw = (raw: BookRaw): Book => ({
   ...raw,
@@ -66,10 +82,10 @@ export const bookFromRaw = (raw: BookRaw): Book => ({
 });
 ```
 
-### 3. API Call(`api/books.ts`)
+### 3. API Call(`services/api/books.ts`)
 
 ```ts
-import { BookRaw } from '../models/book';
+import { BookRaw } from '@/models/book';
 
 export async function fetchBooks(): Promise<BookRaw[]> {
   const res = await fetch('/api/books');
@@ -78,12 +94,12 @@ export async function fetchBooks(): Promise<BookRaw[]> {
 }
 ```
 
-### 4. Ausgelagerte useQuery-Logik (`hooks/useBooks.ts`)
+### 4. Ausgelagerte useQuery-Logik (`services/hooks/useBooks.ts`)
 
 ```ts
 import { useQuery } from '@tanstack/react-query';
-import { fetchBooks } from '../api/books';
-import { bookFromRaw } from '../factories/book.factory';
+import { fetchBooks } from '@services/api/books';
+import { bookFromRaw } from '@/models/book/book.factory';
 
 export function useBooks() {
   return useQuery({
@@ -97,7 +113,7 @@ export function useBooks() {
 ### 5. Verwendung der ausgelagerten Query in der Page (`pages/index.tsx`)
 
 ```ts
-import { useBooks } from '../hooks/useBooks';
+import { useBooks } from '@services/hooks/hooks/useBooks';
 
 export default function BookList() {
   const { data, isLoading } = useBooks();
