@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useEffect } from 'react';
 
 export function useBooksPagination(initialPage = 1) {
   const [page, setPage] = useState(initialPage);

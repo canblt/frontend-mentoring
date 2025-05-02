@@ -1,9 +1,4 @@
 {
   "extends": "stylelint-plugin-oev",
-  "ignoreFiles": [
-    "node_modules/**/*",
-    "dist/**/*",
-    "public/**/*",
-    "coverage/**/*"
-  ]
+  "ignoreFiles": ["node_modules/**/*", "coverage/**/*"]
 }

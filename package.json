@@ -12,9 +12,8 @@
     "test-e2e": "playwright test",
     "test-e2e-watch": "playwright test --ui",
     "start": "op run --env-file='.env' --no-masking -- next start",
-    "lint": "./node_modules/.bin/eslint \"**/*.tsx\" --fix && next lint --fix && prettier --write ./ && pnpm stylelint",
-    "prepare": "husky install",
-    "stylelint": "stylelint \"**/*.{css,scss,sass}\" --fix"
+    "lint": "./node_modules/.bin/eslint \"**/*.tsx\" --fix && next lint --fix && prettier --write ./ ",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@emotion/cache": "11.14.0",
