@@ -1,7 +1,7 @@
-import { Grid2 } from "@mui/material";
-import Link from "next/link";
-import React from "react";
-import { Routes } from "@/config/routes";
+import { Grid2 } from '@mui/material';
+import Link from 'next/link';
+import React from 'react';
+import { Routes } from '@/config/routes';
 
 export default function Navigation() {
   return (
