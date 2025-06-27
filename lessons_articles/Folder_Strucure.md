@@ -39,101 +39,11 @@ features / books / hooks / useBooks.ts;
 features / books / components / BookItem.tsx;
 ```
 
----
 
-## 2. 🎯 Higher-Order Components (HOC)
-
-### 🧠 Theorie
-
-Ein HOC ist eine **Funktion, die eine Komponente entgegennimmt und eine neue Komponente zurückgibt** – mit zusätzlicher Funktionalität.
-
-```tsx
-const withLoading = (Component) => (props) =>
-  props.isLoading ? <Spinner /> : <Component {...props} />;
-```
-
-### Anwendungsfälle
-
-- Ladeindikatoren (`withLoading`)
-- Berechtigungen (`withAuth`)
-- Logging / Metriken
-- Feature Flags
-
-### 📘 Tipp
-
-HOCs eignen sich besonders für **Cross-Cutting Concerns**, die man **unabhängig vom Feature** implementieren möchte.
 
 ---
 
-## 3. 🧩 MVC & MVVM im Frontend
-
-### 🧠 Theorie
-
-- **MVC (Model-View-Controller)**: Entkoppelt Datenlogik (Model), Steuerung (Controller) und Darstellung (View).
-- **MVVM (Model-View-ViewModel)**: In React besser geeignet – „ViewModel“ = Container-Komponente mit Hooks.
-
-### Beispielstruktur
-
-```txt
-features/books/
-├── models/book.ts     // Model
-├── views/BookList.tsx // View
-├── containers/BookListContainer.tsx // ViewModel
-```
-
-### ✅ Vorteile
-
-- Clean Code durch klare Trennung
-- Bessere Testbarkeit (Mock ViewModel)
-- Vermeidung von „Fat Components“
-
----
-
-## 4. ⚙️ Hook-based ViewModels
-
-### 🧠 Theorie
-
-ViewModels können auch als Hooks umgesetzt werden. Das ViewModel aggregiert Zustand, API-Calls und View-spezifische Logik in einem Hook:
-
-```tsx
-function useBookListViewModel() {
-  const { data, isLoading } = useBooks();
-  const handleSelect = (id: string) => ...
-  return { books: data ?? [], isLoading, handleSelect };
-}
-```
-
-Verwendung:
-
-```tsx
-const { books, isLoading } = useBookListViewModel();
-```
-
----
-
-## 5. 🧱 Container/Presenter Pattern
-
-### 🧠 Theorie
-
-- **Container**: verwaltet Zustand & Geschäftslogik
-- **Presenter**: rein visuelle Komponente mit Props
-
-### Motivation
-
-- Presenter kann **einfach getestet** werden
-- Container kapselt **Komplexität**
-
-```tsx
-// Container
-const UserContainer = () => {
-  const user = useUser();
-  return <UserProfile name={user.name} />;
-};
-```
-
----
-
-## 6. 📦 Shared Layer (components, hooks, utils)
+## 2. 📦 Shared Layer (components, hooks, utils)
 
 ### 🧠 Theorie
 
@@ -153,7 +63,7 @@ shared/
 
 ---
 
-## 7. 🎨 Design System Layer
+## 3. 🎨 Design System Layer
 
 ### 🧠 Theorie
 
@@ -171,7 +81,7 @@ Vorteil: Versionierbar, unabhängig testbar, wiederverwendbar in Web & Mobile
 
 ---
 
-## 8. 🏗️ Domain-Layer (Entities)
+## 4. 🏗️ Domain-Layer (Entities)
 
 ### 🧠 Theorie
 
@@ -191,7 +101,7 @@ entities/book/
 
 ---
 
-## 9. 🧬 Microfrontend-Struktur
+## 5. 🧬 Microfrontend-Struktur
 
 ### 🧠 Theorie
 
@@ -210,7 +120,7 @@ features/
 
 ---
 
-## 10. 📈 shared/components skalierbar halten
+## 6. 📈 shared/components skalierbar halten
 
 ### 🧠 Theorie
 
@@ -223,6 +133,87 @@ features/
 - Optional: `@design-system`-Paket als Auslagerung
 
 ---
+
+## 7. Gruppierung nach Dateitypen
+
+### 🧠 Theorie
+   Dieser grundlegende Ansatz gruppiert Dateien basierend auf ihrem Typ oder ihrer Funktion.
+
+```plaintext
+└── src/
+    ├── assets/
+    ├── api/
+    ├── configs/
+    ├── components/
+    │   ├── SignUpForm.tsx
+    │   ├── Employees.tsx
+    │   ├── PaymentForm.tsx
+    │   └── Button.tsx
+    ├── hooks/
+    │   ├── usePayment.ts
+    │   ├── useUpdateEmployee.ts
+    │   ├── useEmployees.ts
+    │   └── useAuth.tsx
+    ├── lib/
+    ├── services/
+    ├── states/
+    └── utils/
+```
+**Projektgröße**: Klein bis Mittel
+
+**Vorteile:**
+- Einfach und leicht verständlich.
+- Gut geeignet für kleine Projekte oder Einsteiger.
+
+**Nachteile:**
+- Zusammengehörige Dateien (z.B. Komponenten und Hooks für dieselbe Funktion) sind verstreut.
+- Schwieriger zu skalieren und zu warten in größeren Projekten.
+
+---
+
+## 8. Gruppierung nach Dateitypen und Features
+
+Kombiniert sowohl die typbasierte als auch die featurebasierte Organisation für eine bessere Modularität.
+
+```
+└── src/
+    ├── assets/
+    ├── api/
+    ├── configs/
+    ├── components/
+    │   ├── auth/
+    │   │   └── SignUpForm.tsx
+    │   ├── payment/
+    │   │   └── PaymentForm.tsx
+    │   ├── common/
+    │   │   └── Button.tsx
+    │   └── employees/
+    │       ├── EmployeeList.tsx
+    │       └── EmployeeSummary.tsx
+    ├── hooks/
+    │   ├── auth/
+    │   │   └── useAuth.ts
+    │   ├── payment/
+    │   │   └── usePayment.ts
+    │   └── employees/
+    │       ├── useEmployees.ts
+    │       └── useUpdateEmployee.ts
+    ├── lib/
+    ├── services/
+    ├── states/
+    └── utils/
+
+```
+
+**Projektgröße:** Mittel bis Groß
+
+**Vorteile:**
+- Modularer Aufbau.
+- Erleichtert das Auffinden zusammengehöriger Dateien für ein bestimmtes Feature.
+
+**Nachteile:**
+- Etwas komplexer.
+- Trennt die verschiedenen Dateitypen dennoch voneinander.
 
 ## ✅ Fazit
 
