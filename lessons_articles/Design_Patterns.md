@@ -90,6 +90,7 @@ const { books, isLoading } = useBookListViewModel();
 ```
 
 ### ✅ Vorteile
+
 - Trennen Logik von Darstellung für mehr Übersichtlichkeit
 - Erleichtern Wiederverwendbarkeit und Testing
 - Strukturieren komplexe Komponenten klar und konsistent
@@ -117,7 +118,9 @@ const UserContainer = () => {
 ```
 
 ## 5. 🧩 Compound Components
+
     Ziel: Mehrere zusammengehörige Komponenten, gesteuert über einen gemeinsamen Zustand.
+
 ```tsx
 import { createContext, useContext, useState } from 'react';
 
@@ -152,11 +155,12 @@ function TabPanel({ index, children }) {
   const { activeIndex } = useContext(TabContext);
   return activeIndex === index ? <div>{children}</div> : null;
 }
-
 ```
 
 ### ✅ Vortiele:
+
 Bessere API für komplexe UIs, ideal für Komponenten wie Tabs, Accordions, Dropdowns – bei denen mehrere Unterkomponenten zusammenarbeiten müssen.
 
 ### Nachteile:
+
 Komplexere Implementierung und schwerer zu verstehen für Anfänger.

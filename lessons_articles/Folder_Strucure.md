@@ -1,4 +1,4 @@
-// 📘 Übersicht: Skalierbare Frontend-Architektur-Patterns in React/Next.js
+# 📘 Übersicht: Skalierbare Frontend-Architektur-Patterns in React/Next.js
 
 ## 🧭 Ziel
 
@@ -38,8 +38,6 @@ features/
 features / books / hooks / useBooks.ts;
 features / books / components / BookItem.tsx;
 ```
-
-
 
 ---
 
@@ -137,7 +135,8 @@ features/
 ## 7. Gruppierung nach Dateitypen
 
 ### 🧠 Theorie
-   Dieser grundlegende Ansatz gruppiert Dateien basierend auf ihrem Typ oder ihrer Funktion.
+
+Dieser grundlegende Ansatz gruppiert Dateien basierend auf ihrem Typ oder ihrer Funktion.
 
 ```plaintext
 └── src/
@@ -159,13 +158,16 @@ features/
     ├── states/
     └── utils/
 ```
+
 **Projektgröße**: Klein bis Mittel
 
 **Vorteile:**
+
 - Einfach und leicht verständlich.
 - Gut geeignet für kleine Projekte oder Einsteiger.
 
 **Nachteile:**
+
 - Zusammengehörige Dateien (z.B. Komponenten und Hooks für dieselbe Funktion) sind verstreut.
 - Schwieriger zu skalieren und zu warten in größeren Projekten.
 
@@ -208,10 +210,12 @@ Kombiniert sowohl die typbasierte als auch die featurebasierte Organisation für
 **Projektgröße:** Mittel bis Groß
 
 **Vorteile:**
+
 - Modularer Aufbau.
 - Erleichtert das Auffinden zusammengehöriger Dateien für ein bestimmtes Feature.
 
 **Nachteile:**
+
 - Etwas komplexer.
 - Trennt die verschiedenen Dateitypen dennoch voneinander.
 
@@ -227,3 +231,17 @@ Diese Architekturprinzipien bilden das Fundament für:
 Sie werden in ähnlicher Form von Firmen wie **Meta, Google, Amazon** verwendet – intern mit CI/CD, Team-Strukturen, Design-Systemen, Layern und Ownership-Modellen.
 
 > Nutze Feature-Folder + ViewModel-Hooks + Shared Layer + Design System für maximal wartbare Codebasen in Next.js.
+
+## 🔍 Aufgaben
+
+### Etwerfe in einen seperaten Branch eine geeignete Projekt und Ordnerstruktur für ein
+
+### 1. kleineres Projekt (ca. weniger als 50 komponenten)
+
+### 2. mittleres Projekt (ca. mehr als 50 komponenten)
+
+### 3. mittleres Projekt (ca. mehr als 500 komponenten)
+
+### 4. kleines Projekt was langfristig ein mitteleres Projekt werden kann.
+
+### 5. mitteleres Projekt was langfristig ein großes Projekt werden kann.
