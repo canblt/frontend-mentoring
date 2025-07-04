@@ -5,8 +5,8 @@ import { BookFiltersProps } from './interfaces';
 export default function BookFilters({ onFilter }: BookFiltersProps) {
   const [input, setInput] = useState<string>('');
 
-  const handleSubmit = ({ preventDefault }: FormEvent) => {
-    preventDefault();
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
     onFilter(input);
   };
 
