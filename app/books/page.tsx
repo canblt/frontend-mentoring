@@ -1,4 +1,4 @@
-import Books from '@/components/Books/Books';
+import { Books } from '@features/books';
 
 export default function Page() {
   return <Books />;

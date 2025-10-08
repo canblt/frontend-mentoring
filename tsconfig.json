@@ -28,9 +28,9 @@
     "baseUrl": "./",
     "paths": {
       "@layouts/*": ["layouts/*"],
-      "@services/*": ["services/*"],
       "@actions/*": ["actions/*"],
       "@styles": ["config/styles.ts"],
+      "@features/*": ["features/*"],
       "@/*": ["*"]
     },
     "plugins": [

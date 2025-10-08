@@ -3,7 +3,7 @@ import { axe } from 'vitest-axe/dist';
 import DashboardPage from '@/app/page';
 
 const setupComponent = async () => {
-  return render(await DashboardPage());
+  return render(<DashboardPage />);
 };
 
 describe('Dashboard page', () => {

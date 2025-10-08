@@ -1,15 +1,12 @@
 import { TextField, Button, Stack } from '@mui/material';
 import { useState, FormEvent } from 'react';
 import { BookFiltersProps } from './interfaces';
-
 export default function BookFilters({ onFilter }: BookFiltersProps) {
-  const [input, setInput] = useState<string>('');
-
-  const handleSubmit = ({ preventDefault }: FormEvent) => {
-    preventDefault();
+  const [input, setInput] = useState('');
+  const handleSubmit = (event: FormEvent) => {
+    event.preventDefault();
     onFilter(input);
   };
-
   return (
     <form onSubmit={handleSubmit}>
       <Stack
@@ -20,7 +17,7 @@ export default function BookFilters({ onFilter }: BookFiltersProps) {
         <TextField
           label="Search by title"
           value={input}
-          onChange={({ target }) => setInput(target.value)}
+          onChange={(event) => setInput(event.target.value)}
           fullWidth
         />
         <Button

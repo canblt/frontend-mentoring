@@ -1,18 +1,15 @@
+'use client';
+
 import { MapperRegistry } from '@/config/mapper-registry';
 import { defaultErrorBook } from '@/models/book/book';
-import { fetchBooks } from '@services/api/books';
+import { fetchBooks } from '../api/books';
 import { useQuery } from '@tanstack/react-query';
 
-export function useBooks(params: {
-  page: number;
-  perPage: number;
-  title?: string;
-}) {
+export function useBooks(params: { page: number; perPage: number; title?: string }) {
   return useQuery({
     queryKey: ['books', params],
     queryFn: async () => {
       const rawArray = await fetchBooks(params);
-
       if (!rawArray || rawArray.length === 0) {
         return [];
       }
@@ -27,3 +24,4 @@ export function useBooks(params: {
     },
   });
 }
+
