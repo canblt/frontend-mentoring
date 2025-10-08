@@ -1,3 +1,4 @@
 import { Book } from '@/models/book/book';
-export interface BookItemProps { book: Book; }
-
+export interface BookItemProps {
+  book: Book;
+}

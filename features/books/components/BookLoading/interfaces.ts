@@ -1,2 +1,3 @@
-export interface BookLoadingProps { elementsPerPage: number; }
-
+export interface BookLoadingProps {
+  elementsPerPage: number;
+}

@@ -8,4 +8,3 @@ export function useBooksPagination(initialPage = 1) {
   const resetPage = () => setPage(1);
   return { page, setPage, nextPage, prevPage, resetPage };
 }
-

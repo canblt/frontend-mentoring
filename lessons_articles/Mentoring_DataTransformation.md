@@ -56,6 +56,7 @@ config/
 Vorherige Struktur mit `services/` wurde entfernt; Logik ist jetzt pro Feature gekapselt (`features/books`).
 
 ### 1. Raw Models (`models/book/book.raw.ts`)
+
 ```ts
 export interface BookRaw {
   isbn: string;
@@ -65,6 +66,7 @@ export interface BookRaw {
 ```
 
 ### 2. Domain Models (`models/book/book.ts`)
+
 ```ts
 export interface Book {
   isbn: string;
@@ -74,6 +76,7 @@ export interface Book {
 ```
 
 ### 3. Factory (`models/book/book.factory.ts`)
+
 ```ts
 import { Book } from './book';
 import { BookRaw } from './book.raw';
@@ -85,11 +88,20 @@ export const bookFromRaw = (raw: BookRaw): Book => ({
 ```
 
 ### 4. API Call (`features/books/api/books.ts`)
+
 ```ts
 import { BookRaw } from '@/models/book/book.raw';
 import { getMockBooks } from './books.mock';
 
-export async function fetchBooks({ page = 1, perPage = 6, title = '' }: { page?: number; perPage?: number; title?: string; }): Promise<BookRaw[]> {
+export async function fetchBooks({
+  page = 1,
+  perPage = 6,
+  title = '',
+}: {
+  page?: number;
+  perPage?: number;
+  title?: string;
+}): Promise<BookRaw[]> {
   return new Promise((resolve) => {
     setTimeout(() => resolve(getMockBooks({ page, perPage, title })), 300);
   });
@@ -97,13 +109,18 @@ export async function fetchBooks({ page = 1, perPage = 6, title = '' }: { page?:
 ```
 
 ### 5. useQuery Hook (`features/books/hooks/useBooks.ts`)
+
 ```ts
 import { useQuery } from '@tanstack/react-query';
 import { fetchBooks } from '../api/books';
 import { MapperRegistry } from '@/config/mapper-registry';
 import { defaultErrorBook } from '@/models/book/book';
 
-export function useBooks(params: { page: number; perPage: number; title?: string }) {
+export function useBooks(params: {
+  page: number;
+  perPage: number;
+  title?: string;
+}) {
   return useQuery({
     queryKey: ['books', params],
     queryFn: async () => {
@@ -123,6 +140,7 @@ export function useBooks(params: { page: number; perPage: number; title?: string
 ```
 
 ### 6. Verwendung in einem Feature-Component (`features/books/components/Books/Books.tsx`)
+
 ```tsx
 import { useBooks } from '../../hooks/useBooks';
 import { useBooksPagination } from '../../hooks/useBooksPagination';
@@ -132,7 +150,11 @@ export default function Books() {
   const { page, nextPage, prevPage } = useBooksPagination();
   const elementsPerPage = 6;
   const { title, setTitle } = useBooksFilters();
-  const { data: books, isLoading } = useBooks({ page, perPage: elementsPerPage, title });
+  const { data: books, isLoading } = useBooks({
+    page,
+    perPage: elementsPerPage,
+    title,
+  });
   // ... Rendering
 }
 ```
@@ -152,6 +174,7 @@ export default function Books() {
 ---
 
 ## 🔧 Automatische Generierung mit OpenAPI
+
 ```bash
 openapi-generator-cli generate -i api.yaml -g typescript-fetch -o src/api
 ```
@@ -159,6 +182,7 @@ openapi-generator-cli generate -i api.yaml -g typescript-fetch -o src/api
 ## 🚀 Erweiterte Patterns & Best Practices
 
 ### 1. Zentrale Mapping-Library (Mapper Registry)
+
 ```ts
 export const MapperRegistry = {
   book: bookFromRaw,
@@ -166,6 +190,7 @@ export const MapperRegistry = {
 ```
 
 ### 2. Validation mit Zod
+
 ```ts
 import { z } from 'zod';
 const BookRawSchema = z.object({
@@ -179,6 +204,7 @@ export function parseBook(raw: unknown) {
 ```
 
 ### 3. Reverse-Mapping (Domain → Raw)
+
 ```ts
 export function toBookRaw(book: Book): BookRaw {
   return {
@@ -190,6 +216,7 @@ export function toBookRaw(book: Book): BookRaw {
 ```
 
 ### 4. Error Handling beim Mapping
+
 ```ts
 try {
   const book = bookFromRaw(data);
@@ -201,9 +228,11 @@ try {
 ---
 
 ## 📚 Fazit
+
 Die **Data-Transformation** zwischen Raw- und Domain-Modellen ist zentral für wartbare Frontends. Die Kapselung im Feature-Ordner (`features/books`) reduziert Kopplung und verbessert Testbarkeit.
 
 ### Best Practices (Kurzfassung)
+
 - Transformation früh durchführen (Factory + Registry)
 - Domain-Model nie direkt aus API-Response ableiten
 - Feature-Folder kapselt UI + Data Hooks + API
@@ -212,4 +241,5 @@ Die **Data-Transformation** zwischen Raw- und Domain-Modellen ist zentral für w
 ---
 
 ## 💡 Zusammenfassung
+
 Mit einer klaren Trennung von **Raw** und **Domain Models**, Feature-Kapselung und Mapping-Strategien baust du eine robuste, skalierbare Codebasis.

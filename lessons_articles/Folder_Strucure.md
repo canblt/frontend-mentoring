@@ -39,8 +39,6 @@ features / books / hooks / useBooks.ts;
 features / books / components / BookItem.tsx;
 ```
 
-
-
 ---
 
 ## 2. 📦 Shared Layer (components, hooks, utils)
@@ -137,7 +135,8 @@ features/
 ## 7. Gruppierung nach Dateitypen
 
 ### 🧠 Theorie
-   Dieser grundlegende Ansatz gruppiert Dateien basierend auf ihrem Typ oder ihrer Funktion.
+
+Dieser grundlegende Ansatz gruppiert Dateien basierend auf ihrem Typ oder ihrer Funktion.
 
 ```plaintext
 └── src/
@@ -159,13 +158,16 @@ features/
     ├── states/
     └── utils/
 ```
+
 **Projektgröße**: Klein bis Mittel
 
 **Vorteile:**
+
 - Einfach und leicht verständlich.
 - Gut geeignet für kleine Projekte oder Einsteiger.
 
 **Nachteile:**
+
 - Zusammengehörige Dateien (z.B. Komponenten und Hooks für dieselbe Funktion) sind verstreut.
 - Schwieriger zu skalieren und zu warten in größeren Projekten.
 
@@ -208,10 +210,12 @@ Kombiniert sowohl die typbasierte als auch die featurebasierte Organisation für
 **Projektgröße:** Mittel bis Groß
 
 **Vorteile:**
+
 - Modularer Aufbau.
 - Erleichtert das Auffinden zusammengehöriger Dateien für ein bestimmtes Feature.
 
 **Nachteile:**
+
 - Etwas komplexer.
 - Trennt die verschiedenen Dateitypen dennoch voneinander.
 

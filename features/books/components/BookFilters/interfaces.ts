@@ -1,2 +1,3 @@
-export interface BookFiltersProps { onFilter: (val: string) => void; }
-
+export interface BookFiltersProps {
+  onFilter: (val: string) => void;
+}
