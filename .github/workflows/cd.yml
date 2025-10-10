@@ -8,12 +8,13 @@ on:
       - development
     paths-ignore:
       - '**/*.md'
+# No delivery is needed for the template repository
 
-jobs:
-  delivery:
-    uses: id-fabrik/workflows/.github/workflows/delivery-ts.yml@main
-    if: ${{ github.repository != 'id-fabrik/frontend-template' }}
-    secrets: inherit
-    with:
-      stack: frontend
-      project: template
+#jobs:
+#  delivery:
+#    uses: id-fabrik/workflows/.github/workflows/delivery-ts.yml@main
+#    if: ${{ github.repository != 'id-fabrik/frontend-template' }}
+#    secrets: inherit
+#    with:
+#      stack: frontend
+#      project: template
