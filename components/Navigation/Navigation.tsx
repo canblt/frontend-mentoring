@@ -26,7 +26,11 @@ export default function Navigation() {
           backgroundColor: (theme) => theme.palette.background.paper,
         }}
       >
-        <Stack direction="row" spacing={1} sx={{ width: '100%' }}>
+        <Stack
+          direction="row"
+          spacing={1}
+          sx={{ width: '100%' }}
+        >
           {items.map(({ label, href }) => {
             const isActive = pathname === href.toLowerCase();
             return (

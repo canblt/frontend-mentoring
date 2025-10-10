@@ -6,4 +6,3 @@ export interface AuthorRaw {
   bookIsbns: string[];
   primaryGenres?: string[];
 }
-

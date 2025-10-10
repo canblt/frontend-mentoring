@@ -12,4 +12,3 @@ export function authorFromRaw(raw: AuthorRaw): Author {
     stats: { bookCount: raw.bookIsbns.length },
   };
 }
-

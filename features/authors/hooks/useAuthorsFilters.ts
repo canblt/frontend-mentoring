@@ -10,4 +10,3 @@ export function useAuthorsFilters() {
   };
   return { name, setName, minBooks, setMinBooks, reset };
 }
-

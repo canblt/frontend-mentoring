@@ -27,8 +27,16 @@ export default function AuthorFilters({ onFilter }: AuthorFiltersProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit} aria-label="Author filters" style={{ width: '100%' }}>
-      <Stack direction="row" spacing={2} sx={{ mb: 3 }}>
+    <form
+      onSubmit={handleSubmit}
+      aria-label="Author filters"
+      style={{ width: '100%' }}
+    >
+      <Stack
+        direction="row"
+        spacing={2}
+        sx={{ mb: 3 }}
+      >
         <TextField
           label="Search author"
           value={name}
@@ -44,7 +52,11 @@ export default function AuthorFilters({ onFilter }: AuthorFiltersProps) {
           sx={{ width: 140 }}
           inputProps={{ min: 0, 'aria-label': 'Minimum number of books' }}
         />
-        <Button type="submit" variant="contained" sx={{ whiteSpace: 'nowrap' }}>
+        <Button
+          type="submit"
+          variant="contained"
+          sx={{ whiteSpace: 'nowrap' }}
+        >
           Apply
         </Button>
       </Stack>

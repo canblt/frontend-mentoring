@@ -16,4 +16,3 @@ export function usePagination(initialPage = 1): PaginationState {
   const resetPage = useCallback(() => setPage(1), []);
   return { page, nextPage, prevPage, resetPage, setPage };
 }
-

@@ -13,6 +13,9 @@ export async function fetchAuthors({
   minBooks?: number;
 }): Promise<{ data: AuthorRaw[]; total: number }> {
   return new Promise((resolve) => {
-    setTimeout(() => resolve(getMockAuthors({ page, perPage, name, minBooks })), 200);
+    setTimeout(
+      () => resolve(getMockAuthors({ page, perPage, name, minBooks })),
+      200
+    );
   });
 }

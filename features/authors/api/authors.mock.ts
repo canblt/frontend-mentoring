@@ -32,9 +32,17 @@ const mockAuthors: AuthorRaw[] = [
   },
 ];
 
-export function filterAuthors({ name = '', minBooks = 0 }: { name?: string; minBooks?: number }) {
-  return mockAuthors.filter((a) =>
-    a.name.toLowerCase().includes(name.toLowerCase()) && a.bookIsbns.length >= minBooks
+export function filterAuthors({
+  name = '',
+  minBooks = 0,
+}: {
+  name?: string;
+  minBooks?: number;
+}) {
+  return mockAuthors.filter(
+    (a) =>
+      a.name.toLowerCase().includes(name.toLowerCase()) &&
+      a.bookIsbns.length >= minBooks
   );
 }
 

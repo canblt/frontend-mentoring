@@ -19,4 +19,3 @@ export const defaultErrorAuthor: Author = {
   primaryGenres: [],
   stats: { bookCount: 0 },
 };
-

@@ -22,7 +22,12 @@ export function PaginationControls({
 }: PaginationControlsProps) {
   const { previous = 'Previous', next = 'Next' } = labels;
   return (
-    <Stack direction="row" spacing={2} justifyContent="center" sx={sx}>
+    <Stack
+      direction="row"
+      spacing={2}
+      justifyContent="center"
+      sx={sx}
+    >
       <Button
         onClick={onPrev}
         variant="outlined"
@@ -34,18 +39,26 @@ export function PaginationControls({
           minWidth: 110,
           fontWeight: 500,
           textTransform: 'none',
-          borderColor: (theme) => (page === 1 ? theme.palette.divider : theme.palette.primary.dark),
-          color: (theme) => (page === 1 ? theme.palette.text.secondary : theme.palette.primary.contrastText),
-          '&:hover': page === 1 ? {} : {
-            borderColor: (theme) => theme.palette.primary.dark,
-            backgroundColor: (theme) => theme.palette.action.hover,
-          },
+          borderColor: (theme) =>
+            page === 1 ? theme.palette.divider : theme.palette.primary.dark,
+          color: (theme) =>
+            page === 1
+              ? theme.palette.text.secondary
+              : theme.palette.primary.contrastText,
+          '&:hover':
+            page === 1
+              ? {}
+              : {
+                  borderColor: (theme) => theme.palette.primary.dark,
+                  backgroundColor: (theme) => theme.palette.action.hover,
+                },
           '&.Mui-disabled': {
             opacity: 1,
             color: (theme) => theme.palette.text.secondary,
             borderColor: (theme) => theme.palette.divider,
           },
-          transition: 'background-color 120ms ease, color 120ms ease, border-color 120ms ease',
+          transition:
+            'background-color 120ms ease, color 120ms ease, border-color 120ms ease',
         }}
       >
         {previous}

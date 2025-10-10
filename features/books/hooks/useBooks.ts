@@ -5,7 +5,11 @@ import { defaultErrorBook } from '@/models/book/book';
 import { fetchBooks } from '../api/books';
 import { useQuery } from '@tanstack/react-query';
 
-export interface UseBooksParams { page: number; perPage: number; title?: string }
+export interface UseBooksParams {
+  page: number;
+  perPage: number;
+  title?: string;
+}
 export interface UseBooksResult {
   data: ReturnType<typeof MapperRegistry.book>[];
   total: number;

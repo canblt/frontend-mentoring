@@ -1,19 +1,24 @@
 'use client';
 
 import { Container, Typography } from '@mui/material';
-import { useAuthors } from '../../hooks/useAuthors';
-import { useAuthorsFilters } from '../../hooks/useAuthorsFilters';
-import { useAuthorsPagination } from '../../hooks/useAuthorsPagination';
+import { PaginationControls } from '@shared/components/PaginationControls/PaginationControls';
 import AuthorFilters from '../AuthorFilters/AuthorFilters';
 import LoadingState from '../LoadingState/LoadingState';
 import AuthorTable from '../AuthorTable/AuthorTable';
-import { PaginationControls } from '@shared/components/PaginationControls/PaginationControls';
+import { useAuthors } from '../../hooks/useAuthors';
+import { useAuthorsFilters } from '../../hooks/useAuthorsFilters';
+import { useAuthorsPagination } from '../../hooks/useAuthorsPagination';
 
 export default function Authors() {
   const { page, nextPage, prevPage, resetPage } = useAuthorsPagination();
   const elementsPerPage = 6;
   const { name, setName, minBooks, setMinBooks } = useAuthorsFilters();
-  const { data: authorsResult, isLoading } = useAuthors({ page, perPage: elementsPerPage, name, minBooks });
+  const { data: authorsResult, isLoading } = useAuthors({
+    page,
+    perPage: elementsPerPage,
+    name,
+    minBooks,
+  });
   const authors = authorsResult?.data || [];
   const total = authorsResult?.total || 0;
   const hasMore = page * elementsPerPage < total;
@@ -26,7 +31,10 @@ export default function Authors() {
 
   return (
     <Container sx={{ pt: 4 }}>
-      <Typography variant="h4" gutterBottom>
+      <Typography
+        variant="h4"
+        gutterBottom
+      >
         Authors List
       </Typography>
       <AuthorFilters onFilter={handleFilter} />
