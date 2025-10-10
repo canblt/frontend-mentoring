@@ -2,7 +2,8 @@ import { TextField, Button, Stack } from '@mui/material';
 import { useState, FormEvent } from 'react';
 import { BookFiltersProps } from './interfaces';
 export default function BookFilters({ onFilter }: BookFiltersProps) {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState<string>('');
+
   const handleSubmit = (event: FormEvent) => {
     event.preventDefault();
     onFilter(input);
