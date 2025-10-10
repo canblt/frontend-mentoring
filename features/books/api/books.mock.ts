@@ -13,13 +13,13 @@ export function getMockBooks({
   page?: number;
   perPage?: number;
   title?: string;
-}): BookRaw[] {
+}): { data: BookRaw[]; total: number } {
   const filtered = mockBooks.filter((book) =>
     book.title.toLowerCase().includes(title.toLowerCase())
   );
   const start = (page - 1) * perPage;
   const end = start + perPage;
-  return filtered.slice(start, end);
+  return { data: filtered.slice(start, end), total: filtered.length };
 }
 const mockBooks: BookRaw[] = [
   {

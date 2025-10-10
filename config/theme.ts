@@ -43,10 +43,10 @@ const theme = extendTheme({
     light: {
       palette: {
         primary: {
-          main: Colors.green,
-          contrastText: Colors.white,
-          dark: Colors.celadonGreen,
-          light: Colors.lightGreen,
+          main: Colors.gray,
+          contrastText: Colors.black,
+          dark: Colors.darkGray,
+          light: Colors.lightGray,
         },
         secondary: {
           main: Colors.russianBlack,

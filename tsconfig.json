@@ -31,6 +31,7 @@
       "@actions/*": ["actions/*"],
       "@styles": ["config/styles.ts"],
       "@features/*": ["features/*"],
+      "@shared/*": ["shared/*"],
       "@/*": ["*"]
     },
     "plugins": [

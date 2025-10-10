@@ -43,4 +43,6 @@ export enum Colors {
   russianBlack = '#000020',
   gray = '#E4E4E4',
   red = '#B33A3A',
+  darkGray = '#BDBDBD',
+  lightGray = '#F5F5F5',
 }

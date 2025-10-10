@@ -8,7 +8,7 @@ export async function fetchBooks({
   page?: number;
   perPage?: number;
   title?: string;
-}): Promise<BookRaw[]> {
+}): Promise<{ data: BookRaw[]; total: number }> {
   return new Promise((resolve) => {
     setTimeout(() => {
       resolve(getMockBooks({ page, perPage, title }));
