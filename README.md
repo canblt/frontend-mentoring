@@ -246,3 +246,14 @@ docker-compose.backend.yml
 
 This includes the backend and frontend in one docker-compose file.
 The example backend functions as a user service and provides functionality to create, read, update, and delete users.
+
+## Design System
+
+A design system with extended tokens (colors, spacing, radii, elevation), light/dark color schemes, and custom component variants has been added.
+
+- Tokens: `config/styles.ts`
+- Theme & color schemes: `config/theme.ts`
+- Runtime mode switching: `CssVarsProvider` in `app/layout.tsx` and `ThemeModeToggle` component.
+- Documentation: [docs/design-system.md](./docs/design-system.md)
+
+Use the provided tokens instead of hardcoded values to ensure consistency and scalability.

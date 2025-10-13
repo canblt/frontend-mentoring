@@ -17,6 +17,7 @@ export default defineConfig({
       '@': path.resolve(__dirname),
       '@features': path.resolve(__dirname, 'features'),
       '@shared': path.resolve(__dirname, 'shared'),
+      'next/font/local': path.resolve(__dirname, 'tests/mocks/nextFontLocalMock.ts'),
     },
     globals: true,
     include: ['tests/unit/**/*.test.tsx', 'tests/unit/**/*.test.ts'],

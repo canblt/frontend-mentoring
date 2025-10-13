@@ -1,6 +1,6 @@
 'use client';
 import React from 'react';
-import { Container, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { PaginationControls } from '@shared/components/PaginationControls/PaginationControls';
 import BookFilters from '../BookFilters/BookFilters';
 import BookLoading from '../BookLoading/BookLoading';
@@ -9,7 +9,11 @@ import { useBooks } from '../../hooks/useBooks';
 import { useBooksFilters } from '../../hooks/useBookFilters';
 import { useBooksPagination } from '../../hooks/useBooksPagination';
 
-export default function Books() {
+interface BooksProps {
+  showHeading?: boolean;
+}
+
+export default function Books({ showHeading = true }: BooksProps) {
   const { page, nextPage, prevPage } = useBooksPagination();
   const elementsPerPage = 6;
   const { title, setTitle } = useBooksFilters();
@@ -22,13 +26,16 @@ export default function Books() {
   const total = booksResult?.total || 0;
   const hasMore = page * elementsPerPage < total;
   return (
-    <Container sx={{ pt: 4 }}>
-      <Typography
-        variant="h4"
-        gutterBottom
-      >
-        Book List
-      </Typography>
+    <Box sx={{ pt: { xs: 1, md: 1 } }}>
+      {showHeading && (
+        <Typography
+          variant="h4"
+          gutterBottom
+          sx={{ fontWeight: 700 }}
+        >
+          Book List
+        </Typography>
+      )}
       <BookFilters onFilter={setTitle} />
       {isLoading ? (
         <BookLoading elementsPerPage={elementsPerPage} />
@@ -42,6 +49,6 @@ export default function Books() {
         onNext={nextPage}
         sx={{ mt: 4 }}
       />
-    </Container>
+    </Box>
   );
 }

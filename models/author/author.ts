@@ -5,8 +5,13 @@ export interface Author {
   birthDate: Date | null;
   bookIsbns: string[];
   primaryGenres: string[];
+  nationality: string | null; // added
+  deathDate: Date | null; // added
+  deathPlace: string | null; // added
+  spouse: string[]; // added (multiple spouses normalized)
   stats: {
     bookCount: number;
+    totalSales: number; // added
   };
 }
 
@@ -17,5 +22,9 @@ export const defaultErrorAuthor: Author = {
   birthDate: null,
   bookIsbns: [],
   primaryGenres: [],
-  stats: { bookCount: 0 },
+  nationality: null,
+  deathDate: null,
+  deathPlace: null,
+  spouse: [],
+  stats: { bookCount: 0, totalSales: 0 },
 };

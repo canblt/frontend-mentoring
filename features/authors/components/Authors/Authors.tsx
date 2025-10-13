@@ -1,6 +1,6 @@
 'use client';
 
-import { Container, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { PaginationControls } from '@shared/components/PaginationControls/PaginationControls';
 import AuthorFilters from '../AuthorFilters/AuthorFilters';
 import LoadingState from '../LoadingState/LoadingState';
@@ -9,7 +9,11 @@ import { useAuthors } from '../../hooks/useAuthors';
 import { useAuthorsFilters } from '../../hooks/useAuthorsFilters';
 import { useAuthorsPagination } from '../../hooks/useAuthorsPagination';
 
-export default function Authors() {
+interface AuthorsProps {
+  showHeading?: boolean;
+}
+
+export default function Authors({ showHeading = true }: AuthorsProps) {
   const { page, nextPage, prevPage, resetPage } = useAuthorsPagination();
   const elementsPerPage = 6;
   const { name, setName, minBooks, setMinBooks } = useAuthorsFilters();
@@ -30,13 +34,16 @@ export default function Authors() {
   }
 
   return (
-    <Container sx={{ pt: 4 }}>
-      <Typography
-        variant="h4"
-        gutterBottom
-      >
-        Authors List
-      </Typography>
+    <Box sx={{ pt: { xs: 1, md: 1 } }}>
+      {showHeading && (
+        <Typography
+          variant="h4"
+          gutterBottom
+          sx={{ fontWeight: 700 }}
+        >
+          Authors List
+        </Typography>
+      )}
       <AuthorFilters onFilter={handleFilter} />
       {isLoading ? (
         <LoadingState elementsPerPage={elementsPerPage} />
@@ -50,6 +57,6 @@ export default function Authors() {
         onNext={nextPage}
         sx={{ mt: 4 }}
       />
-    </Container>
+    </Box>
   );
 }

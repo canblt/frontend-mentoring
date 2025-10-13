@@ -1,12 +1,14 @@
 'use client';
-import { Grid2, Button, Stack } from '@mui/material';
+import { Grid2, Button, Badge, IconButton, Box } from '@mui/material';
 import Link from 'next/link';
 import React from 'react';
 import { usePathname } from 'next/navigation';
 import { Routes } from '@/config/routes';
+import { useCart } from '@/shared/contexts/CartContext';
 
 export default function Navigation() {
   const pathname = (usePathname() || '').toLowerCase();
+  const { totalItems } = useCart();
   const items: Array<{ label: string; href: string }> = [
     { label: 'Home', href: '/' },
     { label: 'Books', href: Routes.Books },
@@ -20,16 +22,15 @@ export default function Navigation() {
         wrap="nowrap"
         sx={{
           gap: 1,
-          py: 1.5,
+          py: 4.5,
           px: 2,
           borderBottom: (theme) => `1px solid ${theme.palette.divider}`,
           backgroundColor: (theme) => theme.palette.background.paper,
+          alignItems: 'center',
         }}
       >
-        <Stack
-          direction="row"
-          spacing={1}
-          sx={{ width: '100%' }}
+        <Box
+          sx={{ display: 'flex', flexDirection: 'row', gap: 1, flexGrow: 1 }}
         >
           {items.map(({ label, href }) => {
             const isActive = pathname === href.toLowerCase();
@@ -39,7 +40,7 @@ export default function Navigation() {
                 component={Link}
                 href={href}
                 aria-current={isActive ? 'page' : undefined}
-                size="small"
+                size="medium"
                 disableElevation
                 variant={isActive ? 'contained' : 'text'}
                 sx={{
@@ -72,7 +73,39 @@ export default function Navigation() {
               </Button>
             );
           })}
-        </Stack>
+        </Box>
+        <Box sx={{ ml: 'auto' }}>
+          <IconButton
+            component={Link}
+            href={Routes.Cart}
+            aria-label={`Cart with ${totalItems} item${totalItems === 1 ? '' : 's'}`}
+            size="small"
+            sx={{
+              borderRadius: 2,
+              position: 'relative',
+              '&:focus-visible': {
+                outline: '2px solid',
+                outlineColor: (theme) => theme.palette.primary.dark,
+                outlineOffset: 2,
+              },
+              mr: 1,
+            }}
+          >
+            <Badge
+              color="secondary"
+              badgeContent={totalItems}
+              max={99}
+              overlap="rectangular"
+            >
+              <span
+                aria-hidden="true"
+                style={{ fontSize: 28, lineHeight: 1 }}
+              >
+                🛒
+              </span>
+            </Badge>
+          </IconButton>
+        </Box>
       </Grid2>
     </nav>
   );
