@@ -22,33 +22,38 @@ Trennung von:
 
 ---
 
-## ⚛️ Beispielstruktur (Next.js mit TanStack Query)
+## ⚙️ Beispielstruktur (Next.js mit TanStack Query – aktuelle Feature-Folder Variante)
 
-### 📁 Projektstruktur
-
-```bazaar
-
-├── app
-│ └── books
-│   └── page.tsx
-├── assets
-├── components
-│ └── Books
-│   └── Books.tsx
-├── config
-│ └── mapper-registry.ts
-├── models
-│ └── book
-│   └── book.ts
-│   └── book.factory.ts
-│   └── book.raw.ts
-├── services
-│ └── api
-│   └── book.ts
-│ └── hooks
-│   └── useBooks.ts
-
+```text
+app/
+  books/
+    page.tsx
+features/
+  books/
+    api/
+      books.ts
+      books.mock.ts
+    hooks/
+      useBooks.ts
+      useBooksPagination.ts
+      useBookFilters.ts
+    components/
+      Books/Books.tsx
+      BookTable/BookTable.tsx
+      BookItem/BookItem.tsx
+      BookFilters/BookFilters.tsx
+      BookLoading/BookLoading.tsx
+      EmptyState/EmptyState.tsx
+models/
+  book/
+    book.raw.ts
+    book.ts
+    book.factory.ts
+config/
+  mapper-registry.ts
 ```
+
+Vorherige Struktur mit `services/` wurde entfernt; Logik ist jetzt pro Feature gekapselt (`features/books`).
 
 ### 1. Raw Models (`models/book/book.raw.ts`)
 
@@ -56,7 +61,7 @@ Trennung von:
 export interface BookRaw {
   isbn: string;
   title: string;
-  published: string;
+  published: string; // ISO String von der API
 }
 ```
 
@@ -66,7 +71,7 @@ export interface BookRaw {
 export interface Book {
   isbn: string;
   title: string;
-  published: Date;
+  published: Date; // Bereits als Date transformiert
 }
 ```
 
@@ -82,55 +87,81 @@ export const bookFromRaw = (raw: BookRaw): Book => ({
 });
 ```
 
-### 3. API Call(`services/api/books.ts`)
+### 4. API Call (`features/books/api/books.ts`)
 
 ```ts
-import { BookRaw } from '@/models/book';
+import { BookRaw } from '@/models/book/book.raw';
+import { getMockBooks } from './books.mock';
 
-export async function fetchBooks(): Promise<BookRaw[]> {
-  const res = await fetch('/api/books');
-  if (!res.ok) throw new Error('Failed to fetch books');
-  return res.json();
-}
-```
-
-### 4. Ausgelagerte useQuery-Logik (`services/hooks/useBooks.ts`)
-
-```ts
-import { useQuery } from '@tanstack/react-query';
-import { fetchBooks } from '@services/api/books';
-import { bookFromRaw } from '@/models/book/book.factory';
-
-export function useBooks() {
-  return useQuery({
-    queryKey: ['books'],
-    queryFn: fetchBooks,
-    select: (raw) => raw.map(bookFromRaw),
+export async function fetchBooks({
+  page = 1,
+  perPage = 6,
+  title = '',
+}: {
+  page?: number;
+  perPage?: number;
+  title?: string;
+}): Promise<BookRaw[]> {
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(getMockBooks({ page, perPage, title })), 300);
   });
 }
 ```
 
-### 5. Verwendung der ausgelagerten Query in der Page (`pages/index.tsx`)
+### 5. useQuery Hook (`features/books/hooks/useBooks.ts`)
 
 ```ts
-import { useBooks } from '@services/hooks/hooks/useBooks';
+import { useQuery } from '@tanstack/react-query';
+import { fetchBooks } from '../api/books';
+import { MapperRegistry } from '@/config/mapper-registry';
+import { defaultErrorBook } from '@/models/book/book';
 
-export default function BookList() {
-  const { data, isLoading } = useBooks();
-
-  if (isLoading) return <div>Loading...</div>;
-
-  return (
-    <ul>
-      {data?.map(book => (
-        <li key={book.isbn}>{book.title} ({book.published.getFullYear()})</li>
-      ))}
-    </ul>
-  );
+export function useBooks(params: {
+  page: number;
+  perPage: number;
+  title?: string;
+}) {
+  return useQuery({
+    queryKey: ['books', params],
+    queryFn: async () => {
+      const rawArray = await fetchBooks(params);
+      if (!rawArray || rawArray.length === 0) return [];
+      return rawArray.map((raw) => {
+        try {
+          return MapperRegistry.book(raw);
+        } catch (e) {
+          console.error('Invalid book data', e, raw);
+          return defaultErrorBook;
+        }
+      });
+    },
+  });
 }
 ```
 
-## 🛠 Vorteile dieser Trennung
+### 6. Verwendung in einem Feature-Component (`features/books/components/Books/Books.tsx`)
+
+```tsx
+import { useBooks } from '../../hooks/useBooks';
+import { useBooksPagination } from '../../hooks/useBooksPagination';
+import { useBooksFilters } from '../../hooks/useBookFilters';
+
+export default function Books() {
+  const { page, nextPage, prevPage } = useBooksPagination();
+  const elementsPerPage = 6;
+  const { title, setTitle } = useBooksFilters();
+  const { data: books, isLoading } = useBooks({
+    page,
+    perPage: elementsPerPage,
+    title,
+  });
+  // ... Rendering
+}
+```
+
+---
+
+## 🛠️ Vorteile dieser Trennung
 
 | Vorteil             | Beschreibung                                  |
 | ------------------- | --------------------------------------------- |
@@ -140,11 +171,9 @@ export default function BookList() {
 | **Testbarkeit**     | Factories sind leicht testbar                 |
 | **Erweiterbarkeit** | Einfache Validierung, Transformation, Mapping |
 
+---
+
 ## 🔧 Automatische Generierung mit OpenAPI
-
-### Tool: [openapi-generator](https://openapi-generator.tech/)
-
-Mit OpenAPI-Generator kannst du automatisch TypeScript-API-Client-Klassen aus einer OpenAPI-Spezifikation generieren. Diese Klassen sind vollständig typisiert und ermöglichen dir eine sichere und schnelle Kommunikation mit deinem Backend.
 
 ```bash
 openapi-generator-cli generate -i api.yaml -g typescript-fetch -o src/api
@@ -154,36 +183,27 @@ openapi-generator-cli generate -i api.yaml -g typescript-fetch -o src/api
 
 ### 1. Zentrale Mapping-Library (Mapper Registry)
 
-In großen Projekten kann es sinnvoll sein, alle Mappings in einer zentralen Registry zu verwalten. So kannst du sicherstellen, dass alle Entitäten auf die gleiche Weise umgewandelt werden.
-
 ```ts
 export const MapperRegistry = {
   book: bookFromRaw,
-  // andere Entitäten...
 };
 ```
 
 ### 2. Validation mit Zod
 
-Zod ist eine Bibliothek zur Schema-Validierung, die direkt mit TypeScript arbeitet. Mit Zod kann das Backend-Modell validieren, bevor es weiterverarbeitet wird.
-
 ```ts
 import { z } from 'zod';
-
 const BookRawSchema = z.object({
   isbn: z.string(),
   title: z.string(),
   published: z.string().datetime(),
 });
-
-function parseBook(raw: unknown): BookRaw {
+export function parseBook(raw: unknown) {
   return BookRawSchema.parse(raw);
 }
 ```
 
 ### 3. Reverse-Mapping (Domain → Raw)
-
-Beim zurücksenden von Daten an das Backend kann das das Domain-Modell zurück zum Raw-Modell konvertiert werden durch die Reverse function in dem fall die toBookRaw
 
 ```ts
 export function toBookRaw(book: Book): BookRaw {
@@ -197,8 +217,6 @@ export function toBookRaw(book: Book): BookRaw {
 
 ### 4. Error Handling beim Mapping
 
-Fehler im Mapping-Prozess können auftreten, wenn die Daten nicht dem erwarteten Format entsprechen. In diesem Fall ist es hilfreich, Fehler zu behandeln und sinnvoll zu protokollieren. Oft der Fall wenn das Backend eine andere Version hat und nicht mit dem Frotend zusammen entwickelt wird.
-
 ```ts
 try {
   const book = bookFromRaw(data);
@@ -207,44 +225,21 @@ try {
 }
 ```
 
+---
+
 ## 📚 Fazit
 
-Die **Data-Transformation** zwischen Raw-Modellen (Backend) und Domain-Modellen (Frontend) ist ein entscheidendes Architektur-Muster für:
+Die **Data-Transformation** zwischen Raw- und Domain-Modellen ist zentral für wartbare Frontends. Die Kapselung im Feature-Ordner (`features/books`) reduziert Kopplung und verbessert Testbarkeit.
 
-### 1. **Saubere Codebasis**
+### Best Practices (Kurzfassung)
 
-- Durch die klare Trennung von Backend-Daten (Raw) und Frontend-Daten (Domain) bleibt der Code übersichtlich und wartbar.
-- beliebig viele Mappings und Transformationen können vorgenommen werden, ohne das gesamte System zu gefährden.
-
-### 2. **Einfache Tests**
-
-- **Factories** und **Mapping-Funktionen** sind sehr gut testbar.
-- Unit-Tests für Transformationen sind sehr einfach zu schreiben, da sie isoliert von der UI und vom Rest der Anwendung arbeiten.
-
-### 3. **Gute Wartbarkeit in großen Codebases**
-
-- Ein gut strukturiertes Mapping-System sorgt dafür, dass deine Anwendung auch in großen Projekten skalierbar bleibt.
-- Änderungen am Backend-Datenmodell können ohne größere Auswirkungen auf das Frontend durchgeführt werden.
+- Transformation früh durchführen (Factory + Registry)
+- Domain-Model nie direkt aus API-Response ableiten
+- Feature-Folder kapselt UI + Data Hooks + API
+- Zod für Validierung einsetzen, optional OpenAPI für Generierung
 
 ---
 
-### 🔄 **Best Practices für React/Next.js in Kombination mit TanStack Query**
+## 💡 Zusammenfassung
 
-- **select:** Der `select`-Hook von TanStack Query bietet einen guten Einstiegspunkt, um Rohdaten bei Bedarf zu transformieren, bevor sie an die UI weitergegeben werden. Dies vereinfacht das Mapping und macht den Code flexibler.
-
-### 🛠 **Tools & Bibliotheken für die Transformation**
-
-1. **OpenAPI**:
-   - Automatische Synchronisation mit dem Backend-Modell durch den Einsatz von OpenAPI-Generatoren, wodurch die Gefahr von Tippfehlern und Inkonsistenzen reduziert wird.
-2. **Zod**:
-
-   - Zod ist eine Validierungsbibliothek, die direkt mit TypeScript arbeitet. Sie ermöglicht dir, Daten zu validieren und sicherzustellen, dass sie dem gewünschten Format entsprechen, bevor sie im Frontend verwendet werden.
-
-3. **Mapping-Registries**:
-   - Eine zentrale Registry für das Mapping von Raw-Modellen zu Domain-Modellen sorgt für eine einfache Erweiterung und Wartbarkeit des Codes.
-
----
-
-### 💡 **Zusammenfassung**
-
-In TypeScript-Frontends ist die Trennung von **Raw** und **Domain Models** nicht nur eine saubere Praxis, sondern auch ein wesentlicher Bestandteil einer skalierbaren Architektur. In Kombination mit OpenAPI, Zod, TanStack Query und Mapping-Registries baust du eine robuste und wartbare Datenverarbeitungslogik auf, die selbst bei komplexen und dynamischen Datenquellen stabil bleibt.
+Mit einer klaren Trennung von **Raw** und **Domain Models**, Feature-Kapselung und Mapping-Strategien baust du eine robuste, skalierbare Codebasis.

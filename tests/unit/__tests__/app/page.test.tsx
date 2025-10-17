@@ -1,9 +1,18 @@
 import { cleanup, render, screen } from '@testing-library/react';
 import { axe } from 'vitest-axe/dist';
+import { CssVarsProvider } from '@mui/material/styles';
 import DashboardPage from '@/app/page';
+import theme from '@/config/theme';
 
 const setupComponent = async () => {
-  return render(await DashboardPage());
+  return render(
+    <CssVarsProvider
+      theme={theme}
+      defaultMode="dark"
+    >
+      <DashboardPage />
+    </CssVarsProvider>
+  );
 };
 
 describe('Dashboard page', () => {
@@ -14,7 +23,8 @@ describe('Dashboard page', () => {
   describe('UI Tests', () => {
     it('should render', async () => {
       await setupComponent();
-      expect(screen.getByText(/Starters Pack OEV/)).toBeDefined();
+      expect(screen.getByText(/discover what's trending/i)).toBeDefined();
+      expect(screen.getByText(/low sales deals/i)).toBeDefined();
     });
   });
 
