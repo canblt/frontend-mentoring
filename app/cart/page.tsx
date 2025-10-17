@@ -45,7 +45,7 @@ export default function CartPage() {
           direction="row"
           justifyContent="space-between"
           alignItems="center"
-          mb={3}
+          m={5}
         >
           <Typography
             variant="h3"
